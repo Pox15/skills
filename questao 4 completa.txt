@@ -1,0 +1,12 @@
+float k, d, m, g, tg60, p, fel, x, o;
+      k = 9 * 1000000000;
+    d = 0.3;
+    m = 0.5;
+    g = 10;
+    tg60 = 1.73;
+    p = m*g;
+    fel = p/tg60;
+    x = fel*d*d/k;
+    o = sqrt(x);
+    
+    printf("%f", o);

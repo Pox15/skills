@@ -1,0 +1,12 @@
+int main()
+{
+    float sen135, sen165, sen60, ta, tb, tc;
+    sen135 = 0.707;
+    sen165 = 0.258;
+    sen60  = 0.866;
+    ta = 100;
+    tb = ta * sen135/sen165;
+    tc = ta * sen60/sen165;
+    
+    printf("As tensoes das cordas  de A, B e C sao respectivamente: %f %f %f", ta, tb, tc);
+}

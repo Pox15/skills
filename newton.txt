@@ -1,0 +1,39 @@
+import numpy as np
+from sympy import symbols, Eq, solve
+
+# Função para obter o sistema de equações do usuário
+def get_equations():
+    num_eq = int(input("Quantas equações você deseja resolver? "))
+    equations = []
+    variables = symbols('x0:%d' % num_eq)  # Crie variáveis simbólicas x0, x1, x2, ...
+
+    for i in range(num_eq):
+        equation_str = input(f"Digite a {i + 1}ª equação em termos de x{i}: ")
+        eq = Eq(eval(equation_str), 0)  # Converte a entrada do usuário em uma equação simbólica
+        equations.append(eq)
+
+    return equations, variables
+
+# Método de Newton para sistemas não lineares
+def newton_system_solver(equations, variables, x0, tol=1e-6, max_iter=100):
+    x = np.array(x0, dtype=float)
+    for _ in range(max_iter):
+        F = np.array([eq.subs(list(zip(variables, x))) for eq in equations], dtype=float)
+        if np.all(np.abs(F) < tol):
+            return x
+        J = np.array([[eq.diff(var).subs(list(zip(variables, x))) for var in variables] for eq in equations], dtype=float)
+        delta_x = np.linalg.solve(J, -F)
+        x += delta_x
+    raise Exception("O método de Newton não convergiu após o número máximo de iterações.")
+
+# Chame a função para obter as equações do usuário
+equations, variables = get_equations()
+
+# Chute inicial
+x0 = [1.0] * len(variables)
+
+# Chame a função do método de Newton
+resultado = newton_system_solver(equations, variables, x0)
+
+# Exiba o resultado
+print("Resultado:", resultado)

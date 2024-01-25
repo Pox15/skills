@@ -1,0 +1,31 @@
+%%
+
+%class Lexer
+%unicode
+%type void
+%function yylex
+%standalone
+
+%{
+    // Código de inicialização Java
+%}
+
+PUNCTUATION  = [(){}]
+ASSIGNMENT   = "="
+INSTRUCTION  = "IF"
+IDENTIFIER   = [a-zA-Z] | [a-hj-zA-HJ-Z]
+SYMBOL_GT_LT = [><]
+OPERATORS    = [+*]
+NUMBER       = [0-9]+
+
+%%
+
+{PUNCTUATION}  { System.out.println(yytext() + ": símbolo de pontuação"); }
+{ASSIGNMENT}   { System.out.println(yytext() + ": símbolo de atribuição"); }
+{INSTRUCTION}  { System.out.println(yytext() + ": instrução"); }
+{IDENTIFIER}   { System.out.println(yytext() + ": identificador"); }
+{SYMBOL_GT_LT} { System.out.println(yytext() + ": " + (yytext().equals(">") ? "símbolo maior que" : "símbolo menor que")); }
+{OPERATORS}    { System.out.println(yytext() + ": " + (yytext().equals("+") ? "símbolo de soma" : "símbolo de multiplicação")); }
+{NUMBER}       { System.out.println(yytext() + ": número"); }
+
+.              { System.out.println("Caractere não reconhecido: " + yytext()); }

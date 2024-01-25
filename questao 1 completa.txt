@@ -1,0 +1,13 @@
+int main()
+{
+    float d, vlm, tl, vtm, tt, tc;
+    d   = 600;
+    vlm = 500;
+    tl   = d/vlm;
+    vtm = 1.5;
+    tt  = d/vtm;
+    tc  = tt - tl;
+    
+ printf("tempo que a lebre pode dormir  eh %f", tc);
+    return 0;
+}

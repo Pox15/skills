@@ -1,0 +1,65 @@
+import heapq
+
+class Grafo:
+    def __init__(self):
+        self.vertices = {}
+    
+    def adicionar_vertice(self, vertice):
+        self.vertices[vertice] = {}
+    
+    def adicionar_aresta(self, origem, destino, peso):
+        self.vertices[origem][destino] = peso
+        self.vertices[destino][origem] = peso
+    
+    def busca_gulosa(self, inicio, objetivo):
+        fila_prioridade = []
+        visitados = set()
+        predecessores = {}  # Armazena os predecessores dos vértices durante a busca
+        custos = {vertice: float('inf') for vertice in self.vertices}
+        
+        # Inicializa a busca com o vértice de início
+        heapq.heappush(fila_prioridade, (0, inicio))
+        custos[inicio] = 0
+        
+        while fila_prioridade:
+            _, vertice_atual = heapq.heappop(fila_prioridade)
+            
+            if vertice_atual == objetivo:
+                caminho = self.reconstruir_caminho(predecessores, inicio, objetivo)
+                print("Caminho mais curto encontrado:", caminho)
+                print("Custo total:", custos[objetivo])
+                break
+            
+            if vertice_atual not in visitados:
+                visitados.add(vertice_atual)
+                
+                for vizinho, peso in self.vertices[vertice_atual].items():
+                    novo_custo = custos[vertice_atual] + peso
+                    if novo_custo < custos[vizinho]:
+                        custos[vizinho] = novo_custo
+                        heapq.heappush(fila_prioridade, (novo_custo, vizinho))
+                        predecessores[vizinho] = vertice_atual
+
+    def reconstruir_caminho(self, predecessores, inicio, objetivo):
+        caminho = [objetivo]
+        while objetivo != inicio:
+            objetivo = predecessores[objetivo]
+            caminho.append(objetivo)
+        return caminho[::-1]  # Inverte a lista para obter o caminho correto
+
+# Exemplo de uso
+grafo = Grafo()
+grafo.adicionar_vertice('A')
+grafo.adicionar_vertice('B')
+grafo.adicionar_vertice('C')
+grafo.adicionar_vertice('D')
+grafo.adicionar_vertice('E')
+
+grafo.adicionar_aresta('A', 'B', 2)
+grafo.adicionar_aresta('A', 'C', 1)
+grafo.adicionar_aresta('B', 'D', 5)
+grafo.adicionar_aresta('C', 'E', 3)
+grafo.adicionar_aresta('D', 'E', 4)
+
+print("Busca Gulosa:")
+grafo.busca_gulosa('A', 'E')

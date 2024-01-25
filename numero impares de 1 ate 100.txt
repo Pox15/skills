@@ -1,0 +1,17 @@
+int main()
+{
+    int i, z;
+    i = 0;
+    while(i<100){ 
+        i++;
+         z = i%2;
+         if(z==1)
+         {
+         printf("%i\n", i);    
+         }
+    
+        
+    }
+
+    return 0;
+}

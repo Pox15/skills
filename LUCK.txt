@@ -1,0 +1,69 @@
+converta o seguinte código :import java.util.Scanner;
+
+public class Tokens {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String myString;
+
+        System.out.print("String: ");
+
+        myString = scanner.nextLine();
+
+        char myChar;
+
+
+        for (int i = 0; i < myString.length(); i++) {
+            myChar = myString.charAt(i);
+
+            if (myChar == ')'  myChar == '('  myChar == '}'  myChar == '{') {
+                System.out.println(myChar + ": " + "símbolo de pontuação");
+            } else if (myChar == '=') {
+                System.out.println(myChar + ": " + "símbolo de atribuição");
+            } else if (myChar == 'I') {
+
+                if (myString.charAt(i + 1) == 'F') {
+                    String instru = String.valueOf(Character.valueOf(myChar)) + String.valueOf(Character.valueOf(myString.charAt(i + 1))) ;
+                    System.out.println(instru + ": " + "instrução");
+                    i++;
+                }else{
+                    System.out.println(myChar + ": " + "identificador");
+                }
+
+
+            } else if ((myChar >= 65 && myChar <= 90)  (myChar >= 97 && myChar <= 122)) {
+                System.out.println(myChar + ": " + "identificador");
+            } else if (myChar == '>') {
+                System.out.println(myChar + ": " + "símbolo maior que");
+}else if (myChar == '<') {
+                System.out.println(myChar + ": " + "símbolo menor que");
+            }else if (myChar == '+') {
+                System.out.println(myChar + ": " + "símbolo de soma");
+            }else if (myChar == '*') {
+                System.out.println(myChar + ": " + "símbolo de multiplicação");
+            }else if (myChar >= 48 && myChar <= 57) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(myChar);
+                char innerChar;
+
+                inner:
+                for (int j = i + 1; j < myString.length(); j++) {
+                    innerChar = myString.charAt(j);
+                    if(innerChar >= 48 && innerChar <= 57){
+                        stringBuilder.append(innerChar);
+                    }
+                    else{
+                        i = j;
+                        break inner;
+                    }
+                }
+                        System.out.println(stringBuilder + ": " + "número");
+
+                // System.out.println(myChar + ": " + "símbolo maior que");
+            }
+
+        }
+
+
+
+    }
+}   para jflex contendo código java

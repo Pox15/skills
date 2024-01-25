@@ -1,0 +1,54 @@
+import java_cup.runtime.*;
+
+%%
+
+%class Lexer
+
+%unicode
+%cup
+
+%{
+    // Importações e código de inicialização necessário
+%}
+
+// Definições
+digit = [0-9]
+letter = [a-zA-Z]
+identifier = {letter}({letter}|{digit})*
+number = {digit}+
+
+%%
+
+// Regras de correspondência
+"(" | ")" | "{" | "}"   { System.out.println(yytext() + ": símbolo de pontuação"); }
+"="                     { System.out.println(yytext() + ": símbolo de atribuição"); }
+"I" "F"                 { System.out.println(yytext() + ": instrução"); }
+{identifier}            { System.out.println(yytext() + ": identificador"); }
+">"                     { System.out.println(yytext() + ": símbolo maior que"); }
+"<"                     { System.out.println(yytext() + ": símbolo menor que"); }
+"+"                     { System.out.println(yytext() + ": símbolo de soma"); }
+"*"                     { System.out.println(yytext() + ": símbolo de multiplicação"); }
+{number}                { System.out.println(yytext() + ": número"); }
+
+// Regras para ignorar espaços em branco e quebras de linha
+[ \t\n\r]               {}
+
+// Lida com caracteres não reconhecidos
+.                       { System.err.println("Caractere não reconhecido: " + yytext()); }
+
+%%
+
+// Código de inicialização adicional
+
+public static void main(String[] args) {
+    Lexer lexer = new Lexer(System.in);
+    Symbol token;
+
+    try {
+        while ((token = lexer.next_token()).sym != sym.EOF) {
+            // Ignora o token EOF
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}

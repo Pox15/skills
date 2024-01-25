@@ -1,0 +1,91 @@
+class Grafo:
+    def __init__(self, vertices):
+        self.vertices = vertices
+        self.grafo = {vertice: set() for vertice in vertices}
+
+    def adicionar_aresta(self, origem, destino):
+        self.grafo[origem].add(destino)
+
+    def busca_em_profundidade(self, inicio):
+        visitados = set()
+        pilha = [inicio]
+
+        while pilha:
+            vertice = pilha.pop()
+            if vertice not in visitados:
+                visitados.add(vertice)
+                pilha.extend(self.grafo[vertice] - visitados)
+        return visitados
+
+    def contar_componentes(self):
+        visitados = set()
+
+        def dfs(vertice):
+            visitados.add(vertice)
+            for vizinho in self.grafo[vertice]:
+                if vizinho not in visitados:
+                    dfs(vizinho)
+
+        contagem_componentes = 0
+        for vertice in self.grafo:
+            if vertice not in visitados:
+                dfs(vertice)
+                contagem_componentes += 1
+
+        return contagem_componentes
+
+    def ordenacao_topologica(self):
+        visitados = set()
+        pilha = []
+
+        def dfs(vertice):
+            visitados.add(vertice)
+            for vizinho in self.grafo[vertice]:
+                if vizinho not in visitados:
+                    dfs(vizinho)
+            pilha.append(vertice)
+
+        for vertice in self.grafo:
+            if vertice not in visitados:
+                dfs(vertice)
+
+        return pilha[::-1]
+
+    def detectar_ciclos(self):
+        visitados = set()
+        pilha = set()
+
+        def dfs(vertice):
+            visitados.add(vertice)
+            pilha.add(vertice)
+
+            for vizinho in self.grafo[vertice]:
+                if vizinho not in visitados:
+                    if dfs(vizinho):
+                        return True
+                elif vizinho in pilha:
+                    return True
+
+            pilha.remove(vertice)
+            return False
+
+        for vertice in self.grafo:
+            if vertice not in visitados:
+                if dfs(vertice):
+                    return True
+
+        return False
+
+vertices = ['1', '2', '3', '4', '5', '6']
+grafo = Grafo(vertices)
+
+grafo.adicionar_aresta('1', '2')
+grafo.adicionar_aresta('1', '3')
+grafo.adicionar_aresta('1', '4')
+grafo.adicionar_aresta('3', '4')
+grafo.adicionar_aresta('5', '6')
+
+print(grafo.busca_em_profundidade('1'))  # Exemplo de saída: {'1', '2', '3', '4'}
+print(grafo.contar_componentes())  # Exemplo de saída: 2
+print(grafo.ordenacao_topologica())  # Exemplo de saída: ['2', '4', '3', '1', '6', '5']
+print(grafo.detectar_ciclos())  # Exemplo de saída: False

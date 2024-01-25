@@ -1,0 +1,12 @@
+int main()
+{
+    float v, aT, t, aC, y;
+    v = 100/3.6;
+    aT = 9.8;
+    t  = 4;
+    aC  = v/t;
+    y   = aC/aT;
+    
+    printf("A aceleracao e de %f maior", y);
+    return 0;
+}

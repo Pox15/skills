@@ -1,0 +1,83 @@
+import socket
+import time
+
+# ID do processo
+process_id = 3
+
+# Dicionário com informações dos processos
+processes = {
+    1: {'address': ('localhost', 5001), 'leader': False},
+    2: {'address': ('localhost', 5002), 'leader': False},
+    3: {'address': ('localhost', 5003), 'leader': False},
+    4: {'address': ('localhost', 5004), 'leader': False},
+    5: {'address': ('localhost', 5005), 'leader': False},
+}
+
+# Função para enviar uma mensagem a um processo
+def send_message(addr, message):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect(addr)
+        s.send(message.encode())
+
+# Função para processar uma mensagem recebida
+def process_message(conn, addr, message):
+    global process_id, processes
+
+    if message == 'election':
+        # Processo com ID maior responde
+        higher_processes = [pid for pid in processes if pid > process_id]
+        if higher_processes:
+            higher_pid = max(higher_processes)
+            send_message(processes[higher_pid]['address'], 'election')
+        else:
+            # Processo é eleito líder
+            processes[process_id]['leader'] = True
+            for pid in processes:
+                if pid != process_id:
+                    send_message(processes[pid]['address'], f'leader {process_id}')
+    elif message.startswith('leader'):
+        # Processo recebe o ID do novo líder
+        leader_pid = int(message.split()[1])
+        processes[leader_pid]['leader'] = True
+
+# Função que representa o processo
+def process():
+    global process_id, processes
+
+    # Inicia o processo
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('localhost', processes[process_id]['address'][1]))
+        s.listen()
+
+        while True:
+            # Aceita uma conexão
+            conn, addr = s.accept()
+
+            # Lê a mensagem recebida
+            message = conn.recv(1024).decode()
+
+            # Processa a mensagem
+            process_message(conn, addr, message)
+
+            # Fecha a conexão
+            conn.close()
+
+# Inicia o processo
+process_thread = threading.Thread(target=process)
+process_thread.start()
+
+# Processo inicia uma eleição
+for pid in processes:
+    if pid > process_id:
+        send_message(processes[pid]['address'], 'election')
+
+# Espera um tempo para a eleição terminar
+time.sleep(1)
+
+# Verifica se há um líder
+for pid in processes:
+    if processes[pid]['leader']:
+        print(f"Processo {pid} é o líder")
+        break
+else:
+    print("Não há líder")

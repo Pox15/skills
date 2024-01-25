@@ -1,0 +1,33 @@
+//24
+        Scanner scanner = new Scanner(System.in);
+        String time;
+        System.out.print("Hora (hh:mm): ");
+        time = scanner.nextLine();
+
+        String horas = time.substring(0, 2);
+        String minutos = time.substring(3, 5);
+
+        System.out.println(time);
+        System.out.println(horas + " horas");
+        System.out.println(minutos + " minutos");
+
+        
+
+        int timeInMinutes = (Integer.parseInt(horas) * 60) + (Integer.parseInt(minutos));
+        System.out.println("Em minutos: " + timeInMinutes);
+
+/25
+        printDivider(25);
+        double custoEspetaculo;
+        System.out.print("Custo do espetáculo: ");
+        custoEspetaculo = scanner.nextDouble();
+        System.out.println("Custo do espetáculo: R$" + custoEspetaculo);
+
+        double precoConvite;
+        System.out.print("Preço do convite: ");
+        precoConvite = scanner.nextDouble();
+        System.out.println("Preço do convite: R$" + precoConvite);
+
+
+        double numConvites =  custoEspetaculo / precoConvite;
+        System.out.println(Math.ceil(numConvites));

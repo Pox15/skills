@@ -1,0 +1,17 @@
+#include <stdio.h>
+int main(void) 
+{
+  int num1, num2, soma;
+  printf("Digite dois numeros: \n");    
+  scanf("%d", &num1);
+  scanf("%d", &num2);
+  soma = num1 + num2;
+if(soma>150)
+  {
+  printf("A soma é maior que 150 e é %d\n", soma);
+      }'''
+    else
+      {
+  printf("A soma é menor que 150 e é %d", soma);
+      }
+}
